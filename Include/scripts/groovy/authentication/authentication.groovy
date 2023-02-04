@@ -65,26 +65,27 @@ public class authentication {
 		WebUI.waitForPageLoad(10)
 	}
 
-	@When ("he enters his (.*) and (.*)")
+	@And ("he enters his (.*) and (.*)")
 	def he_enters_his_email_and_password(String email, String password) {
 		def emailField =findTestObject('Object Repository/email')
 		WebUI.click(emailField)
 		WebUI.setText(emailField, email)
+		
 		def passwordField = findTestObject('Object Repository/password')
 		WebUI.click(passwordField)
 		WebUI.setText(passwordField, password)
 	}
 
-	@When ("he accepts the conditions")
+	@And ("he accepts the conditions")
 	def he_accepts_the_conditions() {
 		def cgu =findTestObject('Object Repository/generalConditions')
 		WebUI.click(cgu)
 	}
 
-	@When ("he accepts the use of his data")
+	@And ("he accepts the use of his data")
 	def he_accepts_the_use_of_his_data() {
-		def cgu =findTestObject('Object Repository/allowData')
-		WebUI.click(cgu)
+		def allowData =findTestObject('Object Repository/allowData')
+		WebUI.click(allowData)
 	}
 
 	@When ("he clicks on connect")
@@ -95,27 +96,38 @@ public class authentication {
 
 	
 	@When ("he change (.*) with (.*)")
-	def he_change_oldPassword_par_newPassword(String oldPassword, String newPassword) {
+	def he_change_oldPassword_par_newPassword(String oldPassword, String password) {
 
+		//Creating a basic PUT Request
 		HttpPut httpPut = new HttpPut("https://app.myunisoft.fr/api/user/password");
 
+		//Adding headers to PUT HTTP Request
 		httpPut.setHeader("Accept", "application/json");
 		httpPut.setHeader("Content-type", "application/json");
+		
+		//Using an authorization token to access an API 
+		//If the code does not work because of the token, you must replace the current token with a new "myu-access-token" token (you can find it when you inspect the element and then go to the "network")
 		httpPut.setHeader("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfZ3JvdXBfaWQiOjUzLCJwZXJzX3BoeXNpcXVlX2lkIjo0OSwicHJvZmlsVHlwZSI6IkNhYmluZXQiLCJwcm9maWxDb2RlIjoiY2FiaV9jb2xsYWJfY29tcHRhIiwicHJvZmlsSWQiOiI1IiwicHJvZmlsTmFtZSI6IkNvbGxhYm9yYXRldXIgY29tcHRhIiwiaXNQbGF0Zm9ybUFkbWluaXN0cmF0b3IiOmZhbHNlLCJpYXQiOjE2NzU1MDY4MzgsImV4cCI6MTY3NTU1MDAzOH0.sw-ZHRJ-MKeBx07Cqhk8bEWJRWSduOWWGR_72Ac5Ebc");
+		
+		//Adding JSON Data to PUT request
 		String json = "{\r\n" +
 				" \"old_password\": \""+oldPassword+"\" ,\r\n"  +
-				" \"new_password\": \""+newPassword+"\" \r\n" +
+				" \"new_password\": \""+password+"\" \r\n" +
 				"}";
 
 		System.out.println(json) ;
 
+		//Sending JSON as request body in the PUT request
 		StringEntity stringEntity = new StringEntity(json);
 		httpPut.setEntity(stringEntity);
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
+		
+		//Sending a  PUT request via execute() Method
 		HttpResponse response =  httpclient.execute(httpPut);
 		System.out.println(response);
 		
+		//Checking that the status code equals 204
 		if(response.getStatusLine().getStatusCode() != 204) {
 			throw new Exception ('error status code')
 			
@@ -127,51 +139,44 @@ public class authentication {
 	def he_is_logged_into_his_account() {
 		def logoAccount =findTestObject('Object Repository/avatar')
 		WebUI.verifyElementVisible(logoAccount)
+		
 
 		def homePage =findTestObject('Object Repository/homePage')
 		WebUI.verifyElementVisible(homePage)
+		WebUI.closeBrowser()
 	}
 	
-	@Then ("he logs in with (.*) and (.*)")
-	def he_logs_in_with(String email, String newPassword) {
-		def emailField =findTestObject('Object Repository/email')
-		WebUI.click(emailField)
-		WebUI.setText(emailField, email)
-		def passwordField = findTestObject('Object Repository/password')
-		WebUI.click(passwordField)
-		WebUI.setText(passwordField, newPassword)
-		def cgu =findTestObject('Object Repository/generalConditions')
-		WebUI.click(cgu)
-		def allowdata =findTestObject('Object Repository/allowData')
-		WebUI.click(allowdata)
-		def login =findTestObject('Object Repository/login')
-		WebUI.click(login)
-	}
 	
 	@And ("he replaces his (.*) with his (.*)")
-	def he_replaces_his_newPassword_with_his_oldPassword(String newPassword, String oldPassword) {
+	def he_replaces_his_newPassword_with_his_oldPassword(String password, String oldPassword) {
 		def avatar =findTestObject('Object Repository/avatar')
 		WebUI.click(avatar)
+		
 		def btnNewPassword =findTestObject('Object Repository/btn_newPassword')
 		WebUI.click(btnNewPassword)
+		
 		def currentPassword =findTestObject('Object Repository/CurrentPassword')
 		WebUI.click(currentPassword)
-		WebUI.setText(currentPassword, newPassword)
+		WebUI.setText(currentPassword, password)
+		
 		def nouveauPassword =findTestObject('Object Repository/newPassword')
 		WebUI.click(nouveauPassword)
 		WebUI.setText(nouveauPassword, oldPassword)
+		
 		def confirmNewPassword =findTestObject('Object Repository/confirmNewPassword')
 		WebUI.click(confirmNewPassword)
 		WebUI.setText(confirmNewPassword, oldPassword)
+		
 		def tovalidate =findTestObject('Object Repository/toValidate')
 		WebUI.click(tovalidate)
 	}
 	
 	
-	@Then("the change is verified")
-	def the_change_is_verified() {
+	@Then("Password reset successfully")
+	def Password_reset_successfully() {
 		def checkChange =findTestObject('Object Repository/checkChange')
 		WebUI.verifyElementVisible(checkChange)
+		
 		WebUI.closeBrowser()
 	
 	}
