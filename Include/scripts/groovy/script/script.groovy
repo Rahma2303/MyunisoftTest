@@ -1,4 +1,4 @@
-package authentication;
+package script;
 
 import internal.GlobalVariable;
 import static com.kms.katalon.core.checkpoint.CheckpointFactory.findCheckpoint;
@@ -55,7 +55,7 @@ import com.kms.katalon.core.testobject.ConditionType;
 import com.kms.katalon.core.testobject.TestObjectProperty;
 import com.kms.katalon.core.util.KeywordUtil;
 
-public class authentication {
+public class script {
 
 	@Given ("the user launches the application")
 	def the_user_launches_the_application() {
@@ -70,7 +70,7 @@ public class authentication {
 		def emailField =findTestObject('Object Repository/email')
 		WebUI.click(emailField)
 		WebUI.setText(emailField, email)
-		
+
 		def passwordField = findTestObject('Object Repository/password')
 		WebUI.click(passwordField)
 		WebUI.setText(passwordField, password)
@@ -94,9 +94,9 @@ public class authentication {
 		WebUI.click(login)
 	}
 
-	
-	@When ("he change (.*) with (.*)")
-	def he_change_oldPassword_par_newPassword(String oldPassword, String password) {
+
+	@When ("changing (.*) with (.*) using api")
+	def changing_oldPassword_with_password_using_api(String oldPassword, String password) {
 
 		//Creating a basic PUT Request
 		HttpPut httpPut = new HttpPut("https://app.myunisoft.fr/api/user/password");
@@ -104,11 +104,11 @@ public class authentication {
 		//Adding headers to PUT HTTP Request
 		httpPut.setHeader("Accept", "application/json");
 		httpPut.setHeader("Content-type", "application/json");
-		
-		//Using an authorization token to access an API 
+
+		//Using an authorization token to access an API
 		//If the code does not work because of the token, you must replace the current token with a new "myu-access-token" token (you can find it when you inspect the element and then go to the "network")
-		httpPut.setHeader("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfZ3JvdXBfaWQiOjUzLCJwZXJzX3BoeXNpcXVlX2lkIjo0OSwicHJvZmlsVHlwZSI6IkNhYmluZXQiLCJwcm9maWxDb2RlIjoiY2FiaV9jb2xsYWJfY29tcHRhIiwicHJvZmlsSWQiOiI1IiwicHJvZmlsTmFtZSI6IkNvbGxhYm9yYXRldXIgY29tcHRhIiwiaXNQbGF0Zm9ybUFkbWluaXN0cmF0b3IiOmZhbHNlLCJpYXQiOjE2NzU1MDY4MzgsImV4cCI6MTY3NTU1MDAzOH0.sw-ZHRJ-MKeBx07Cqhk8bEWJRWSduOWWGR_72Ac5Ebc");
-		
+		httpPut.setHeader("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfZ3JvdXBfaWQiOjUzLCJwZXJzX3BoeXNpcXVlX2lkIjo0OSwicHJvZmlsVHlwZSI6IkNhYmluZXQiLCJwcm9maWxDb2RlIjoiY2FiaV9jb2xsYWJfY29tcHRhIiwicHJvZmlsSWQiOiI1IiwicHJvZmlsTmFtZSI6IkNvbGxhYm9yYXRldXIgY29tcHRhIiwiaXNQbGF0Zm9ybUFkbWluaXN0cmF0b3IiOmZhbHNlLCJpYXQiOjE2NzU1OTQ2NDcsImV4cCI6MTY3NTYzNzg0N30.ww2dOWz1l7f05tcEgPLppEevF6_be0rl5SqkP10KpYY");
+
 		//Adding JSON Data to PUT request
 		String json = "{\r\n" +
 				" \"old_password\": \""+oldPassword+"\" ,\r\n"  +
@@ -122,63 +122,63 @@ public class authentication {
 		httpPut.setEntity(stringEntity);
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		
+
 		//Sending a  PUT request via execute() Method
 		HttpResponse response =  httpclient.execute(httpPut);
 		System.out.println(response);
-		
+
 		//Checking that the status code equals 204
 		if(response.getStatusLine().getStatusCode() != 204) {
 			throw new Exception ('error status code')
-			
+
 		}
-		
+
 	}
 
 	@Then ("he is logged into his account")
 	def he_is_logged_into_his_account() {
 		def logoAccount =findTestObject('Object Repository/avatar')
 		WebUI.verifyElementVisible(logoAccount)
-		
+
 
 		def homePage =findTestObject('Object Repository/homePage')
 		WebUI.verifyElementVisible(homePage)
 		WebUI.closeBrowser()
 	}
-	
-	
+
+
 	@And ("he replaces his (.*) with his (.*)")
 	def he_replaces_his_newPassword_with_his_oldPassword(String password, String oldPassword) {
 		def avatar =findTestObject('Object Repository/avatar')
 		WebUI.click(avatar)
-		
+
 		def btnNewPassword =findTestObject('Object Repository/btn_newPassword')
 		WebUI.click(btnNewPassword)
-		
+
 		def currentPassword =findTestObject('Object Repository/CurrentPassword')
 		WebUI.click(currentPassword)
 		WebUI.setText(currentPassword, password)
-		
+
 		def nouveauPassword =findTestObject('Object Repository/newPassword')
 		WebUI.click(nouveauPassword)
 		WebUI.setText(nouveauPassword, oldPassword)
-		
+
 		def confirmNewPassword =findTestObject('Object Repository/confirmNewPassword')
 		WebUI.click(confirmNewPassword)
 		WebUI.setText(confirmNewPassword, oldPassword)
-		
+
 		def tovalidate =findTestObject('Object Repository/toValidate')
 		WebUI.click(tovalidate)
 	}
-	
-	
+
+
 	@Then("Password reset successfully")
 	def Password_reset_successfully() {
 		def checkChange =findTestObject('Object Repository/checkChange')
 		WebUI.verifyElementVisible(checkChange)
-		
+
 		WebUI.closeBrowser()
-	
+
 	}
 
 }

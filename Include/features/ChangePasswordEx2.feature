@@ -4,7 +4,7 @@ Feature: Change password
   @ChangePassword @tnr
   Scenario Outline: Change password using api
     Given the user launches the application
-    When he change <oldPassword> with <password>
+    When changing <oldPassword> with <password> using api
     Then he enters his <email> and <password>
     And he accepts the conditions
     And he accepts the use of his data
