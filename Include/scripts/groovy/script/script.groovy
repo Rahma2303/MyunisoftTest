@@ -107,7 +107,7 @@ public class script {
 
 		//Using an authorization token to access an API
 		//If the code does not work because of the token, you must replace the current token with a new "myu-access-token" token (you can find it when you inspect the element and then go to the "network")
-		httpPut.setHeader("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfZ3JvdXBfaWQiOjUzLCJwZXJzX3BoeXNpcXVlX2lkIjo0OSwicHJvZmlsVHlwZSI6IkNhYmluZXQiLCJwcm9maWxDb2RlIjoiY2FiaV9jb2xsYWJfY29tcHRhIiwicHJvZmlsSWQiOiI1IiwicHJvZmlsTmFtZSI6IkNvbGxhYm9yYXRldXIgY29tcHRhIiwiaXNQbGF0Zm9ybUFkbWluaXN0cmF0b3IiOmZhbHNlLCJpYXQiOjE2NzU1OTQ2NDcsImV4cCI6MTY3NTYzNzg0N30.ww2dOWz1l7f05tcEgPLppEevF6_be0rl5SqkP10KpYY");
+		httpPut.setHeader("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJfZ3JvdXBfaWQiOjUzLCJwZXJzX3BoeXNpcXVlX2lkIjo0OSwicHJvZmlsVHlwZSI6IkNhYmluZXQiLCJwcm9maWxDb2RlIjoiY2FiaV9jb2xsYWJfY29tcHRhIiwicHJvZmlsSWQiOiI1IiwicHJvZmlsTmFtZSI6IkNvbGxhYm9yYXRldXIgY29tcHRhIiwiaXNQbGF0Zm9ybUFkbWluaXN0cmF0b3IiOmZhbHNlLCJpYXQiOjE2NzU2NzQ0MTQsImV4cCI6MTY3NTcxNzYxNH0.fX-wyzTIwsKO4q5dL_lYMtZ-ZvdH7cgsrKlsPO3SY1o");
 
 		//Adding JSON Data to PUT request
 		String json = "{\r\n" +
